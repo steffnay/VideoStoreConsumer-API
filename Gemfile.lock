@@ -45,6 +45,7 @@ GEM
       tzinfo (~> 1.1)
     ansi (1.5.0)
     arel (7.1.4)
+    awesome_print (1.8.0)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -195,6 +196,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  awesome_print
   better_errors
   binding_of_caller
   byebug
@@ -220,4 +222,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.14.6
+   1.16.0
