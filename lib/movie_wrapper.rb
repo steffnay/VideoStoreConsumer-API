@@ -1,6 +1,6 @@
 class MovieWrapper
   BASE_URL = "https://api.themoviedb.org/3/"
-  KEY = ENV["MOVIEDB_KEY"]
+  KEY = ENV["TMDB_KEY"]
 
   BASE_IMG_URL = "https://image.tmdb.org/t/p/"
   DEFAULT_IMG_SIZE = "w185"
