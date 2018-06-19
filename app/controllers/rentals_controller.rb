@@ -7,7 +7,7 @@ class RentalsController < ApplicationController
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
 
     if rental.save
-      render status: :ok, json: {}
+      render status: :ok, json: {due_date: rental.due_date}
     else
       render status: :bad_request, json: { errors: rental.errors.messages }
     end
@@ -47,7 +47,7 @@ class RentalsController < ApplicationController
 private
   # TODO: make error payloads arrays
   def require_movie
-    @movie = Movie.find_by title: params[:title]
+    @movie = Movie.find_by('lower(title) = ?', params[:title].downcase)
     unless @movie
       render status: :not_found, json: { errors: { title: ["No movie with title #{params[:title]}"] } }
     end
