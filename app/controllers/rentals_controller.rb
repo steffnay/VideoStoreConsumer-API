@@ -4,17 +4,18 @@ class RentalsController < ApplicationController
 
   # Added by us!
   def index
-    rentals = Rental.all.map do |rental|
-      {
-          title: rental.movie.title,
-          customer_id: rental.customer_id,
-          name: rental.customer.name,
-          postal_code: rental.customer.postal_code,
-          checkout_date: rental.checkout_date,
-          due_date: rental.due_date
-      }
-    end
-    render status: :ok, json: rentals
+    render status: :ok, json: Rental.all.map { |rental_info| get_rental_info_hash(rental_info) }
+    # rentals = Rental.all.map do |rental|
+    #   {
+    #       title: rental.movie.title,
+    #       customer_id: rental.customer_id,
+    #       name: rental.customer.name,
+    #       postal_code: rental.customer.postal_code,
+    #       checkout_date: rental.checkout_date,
+    #       due_date: rental.due_date
+    #   }
+    # end
+    # render status: :ok, json: rentals
   end
 
   # TODO: make sure that wave 2 works all the way
@@ -46,17 +47,9 @@ class RentalsController < ApplicationController
   end
 
   def overdue
-    rentals = Rental.overdue.map do |rental|
-      {
-          title: rental.movie.title,
-          customer_id: rental.customer_id,
-          name: rental.customer.name,
-          postal_code: rental.customer.postal_code,
-          checkout_date: rental.checkout_date,
-          due_date: rental.due_date
-      }
-    end
-    render status: :ok, json: rentals
+    render status: :ok, json: Rental.overdue.map { |rental_info| get_rental_info_hash(rental_info) }
+    # rentals = Rental.overdue.map { |rental| get_rental_info_hash(rental_info) }
+    # render status: :ok, json: rentals
   end
 
 private
@@ -73,5 +66,17 @@ private
     unless @customer
       render status: :not_found, json: { errors: { customer_id: ["No such customer #{params[:customer_id]}"] } }
     end
+  end
+
+  def get_rental_info_hash(rental_info)
+    return {
+        title: rental_info.movie.title,
+        customer_id: rental_info.customer_id,
+        name: rental_info.customer.name,
+        postal_code: rental_info.customer.postal_code,
+        checkout_date: rental_info.checkout_date,
+        due_date: rental_info.due_date,
+        returned: rental_info.returned
+    }
   end
 end
