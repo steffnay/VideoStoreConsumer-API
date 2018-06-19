@@ -22,20 +22,27 @@ class MoviesController < ApplicationController
   end
 
   def create
-    new_movie = Movie.new(
-      title: movie_params[:title],
-      overview: movie_params[:overview],
-      release_date: movie_params[:release_date],
-      image_url: movie_params[:image_url],
-      external_id: movie_params[:external_id])
+    existing = Movie.find_by(external_id: movie_params[:external_id])
 
-
-    if new_movie.save
-      render json: { external_id: new_movie.external_id }, status: :ok
+    if existing
+      render json: {ok: false, errors: "Movie already in inventory"}, status: :bad_request
       return
     else
-      render json: {ok: false, errors: "Movie not added to inventory"}, status: :bad_request
-      return
+      new_movie = Movie.new(
+        title: movie_params[:title],
+        overview: movie_params[:overview],
+        release_date: movie_params[:release_date],
+        image_url: movie_params[:image_url],
+        external_id: movie_params[:external_id])
+
+
+      if new_movie.save
+        render json: { title: new_movie.title }, status: :ok
+        return
+      else
+        render json: {ok: false, errors: "Movie not added to inventory"}, status: :bad_request
+        return
+      end
     end
 
   end
