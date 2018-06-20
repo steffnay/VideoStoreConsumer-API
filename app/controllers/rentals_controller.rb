@@ -10,7 +10,7 @@ class RentalsController < ApplicationController
   # TODO: make sure that wave 2 works all the way
   def check_out
     rental = Rental.new(movie: @movie, customer: @customer, due_date: params[:due_date])
-    # rental.returned = false
+    rental.returned = false
     if rental.save
       render status: :ok, json: {due_date: rental.due_date}
     else
@@ -37,8 +37,6 @@ class RentalsController < ApplicationController
 
   def overdue
     render status: :ok, json: Rental.overdue.map { |rental_info| get_rental_info_hash(rental_info) }
-    # rentals = Rental.overdue.map { |rental| get_rental_info_hash(rental_info) }
-    # render status: :ok, json: rentals
   end
 
 private
