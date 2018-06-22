@@ -37,8 +37,6 @@ class RentalsController < ApplicationController
 
   def overdue
     render status: :ok, json: Rental.overdue.map { |rental_info| get_rental_info_hash(rental_info) }
-    # rentals = Rental.overdue.map { |rental| get_rental_info_hash(rental_info) }
-    # render status: :ok, json: rentals
   end
 
 private
